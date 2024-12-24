@@ -1,4 +1,4 @@
-import { signUpAction } from "@/app/actions";
+import { signUpAction } from "@/utils/auth-util";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +29,8 @@ export default async function Signup(props: {
           </Link>
         </p>
         <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
+          <Label htmlFor="username">Username</Label>
+          <Input name="username" placeholder="Username" required />
           <Label htmlFor="email">Email</Label>
           <Input name="email" placeholder="you@example.com" required />
           <Label htmlFor="password">Password</Label>

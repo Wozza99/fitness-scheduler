@@ -1,16 +1,16 @@
 import { getTable } from "./database";
 
 export type Workout = {
-    id: string;
-    created_at: string;
-    user_id: string;
-    data: any;
+    workout_id: string;
+    profile_id: string;
+    points?: number;
+    description?: string;
 };
 
 // Get workouts for a user
-export async function getWorkoutsForUser(id: string): Promise<Workout[]> {
+export async function getWorkoutsForUser(profile_id: string): Promise<Workout[]> {
     const table = await getTable("workouts");
-    const request = await table.select().eq("user_id", id);
+    const request = await table.select().eq("profile_id", profile_id);
     if (request.error != null) {
         console.error(request.error);
         throw new Error("Unable to retrieve workouts");
@@ -19,12 +19,12 @@ export async function getWorkoutsForUser(id: string): Promise<Workout[]> {
 }
 
 // Create a new workout for a user
-export async function createWorkout(user_id: string, data: any): Promise<Workout> {
+export async function createWorkout(profile_id: string, points?: number, description?: string): Promise<Workout> {
     const table = await getTable("workouts");
     const newWorkout = {
-        user_id,
-        data,
-        created_at: new Date().toISOString(),
+        profile_id,
+        points,
+        description,
     };
 
     const request = await table.insert(newWorkout);
@@ -33,29 +33,33 @@ export async function createWorkout(user_id: string, data: any): Promise<Workout
         throw new Error("Unable to create workout");
     }
     if (request?.data?.[0] == null) {
-        throw new Error('Unable to create workout')
+        throw new Error('Unable to create workout');
     }
     return request.data[0];
 }
 
 // Update an existing workout
-export async function updateWorkout(id: string, data: any): Promise<Workout> {
+export async function updateWorkout(workout_id: string, points?: number, description?: string): Promise<Workout> {
     const table = await getTable("workouts");
-    const request = await table.update({ data }).eq("id", id);
+    const updatedWorkout = {
+        points,
+        description,
+    };
+    const request = await table.update(updatedWorkout).eq("workout_id", workout_id);
     if (request.error != null) {
         console.error(request.error);
         throw new Error("Unable to update workout");
     }
     if (request?.data?.[0] == null) {
-        throw new Error('Unable to create workout')
+        throw new Error('Unable to update workout');
     }
     return request.data[0];
 }
 
 // Delete a workout
-export async function deleteWorkout(id: string): Promise<void> {
+export async function deleteWorkout(workout_id: string): Promise<void> {
     const table = await getTable("workouts");
-    const request = await table.delete().eq("id", id);
+    const request = await table.delete().eq("workout_id", workout_id);
     if (request.error != null) {
         console.error(request.error);
         throw new Error("Unable to delete workout");
