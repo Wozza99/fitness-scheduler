@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { getExercises } from "@/utils/data/exercises";
+import Table from "@/components/ui/table";
 
 export default async function ExercisesPage() {
   const supabase = await createClient();
@@ -15,29 +16,17 @@ export default async function ExercisesPage() {
 
   const exercises = await getExercises();
 
+  const columns = ["exercise_name", "instructions", "tips"];
+  const columnNames = {
+    exercise_name: "Name",
+    instructions: "Instructions",
+    tips: "Tips",
+  };
+
   return (
     <div>
       <h1>Exercises</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>Exercise ID</th>
-            <th>Exercise Name</th>
-            <th>Instructions</th>
-            <th>Tips</th>
-          </tr>
-        </thead>
-        <tbody>
-          {exercises.map((exercise) => (
-            <tr key={exercise.exercise_id}>
-              <td>{exercise.exercise_id}</td>
-              <td>{exercise.exercise_name}</td>
-              <td>{exercise.instructions}</td>
-              <td>{exercise.tips}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table columns={columns} data={exercises} columnNames={columnNames} />
     </div>
   );
 }

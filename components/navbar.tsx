@@ -13,9 +13,6 @@ const Navbar = () => {
   return (
     <nav className="w-full border-b border-b-foreground/10 h-16">
       <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm mx-auto">
-        <div className="flex items-center gap-5 font-semibold">
-          <Link href={"/"}>Fitness Scheduler</Link>
-        </div>
         <div className="hidden md:flex items-center gap-5">
           <Link href="/protected/calendar">Calendar</Link>
           <Link href="/protected/workouts">Workouts</Link>

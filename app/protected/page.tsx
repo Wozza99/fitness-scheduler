@@ -17,8 +17,7 @@ export default async function ProtectedPage() {
 
   return (
     <div>
-      <h1>Protected Page</h1>
-      <p>Welcome, {profile.username}!</p>
+      <h1>Welcome, {profile.username}!</h1>
       <p>Your progress is: {profile.progress}</p>
     </div>
   );
