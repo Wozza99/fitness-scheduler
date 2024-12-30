@@ -2,22 +2,22 @@ import { Button } from "@/components/ui/button";
 import { deleteExercise, getExerciseById } from "@/utils/data/exercises";
 import { redirect } from "next/navigation";
 
+interface ExerciseDetailsPageProps {
+  params: { exercise_id: string }; // Use string for dynamic route parameters
+}
+
 export default async function ExerciseDetailsPage({
   params,
-}: {
-  params: { exercise_id: number };
-}) {
-  const exercise = await getExerciseById(params.exercise_id);
+}: ExerciseDetailsPageProps) {
+  const exerciseId = parseInt(params.exercise_id, 10); // Convert to number
+  const exercise = await getExerciseById(exerciseId);
 
-  // Helper function to render instructions
   const renderInstructions = (instructions: string | null) => {
-    if (!instructions || instructions.trim() === '') return <p>No instructions available.</p>;
+    if (!instructions || instructions.trim() === "") return <p>No instructions available.</p>;
 
-    // Check if instructions contain multiple lines
-    const lines = instructions.split('\n').filter((line) => line.trim() !== '');
+    const lines = instructions.split("\n").filter((line) => line.trim() !== "");
 
     if (lines.length > 1) {
-      // Render as an ordered list if there are multiple lines
       return (
         <ol>
           {lines.map((line, index) => (
@@ -27,18 +27,17 @@ export default async function ExerciseDetailsPage({
       );
     }
 
-    // Render as plain text if it's a single line
     return <p>{instructions}</p>;
   };
 
   async function handleSubmit() {
-    'use server';
+    "use server";
 
     try {
-      await deleteExercise(exercise.exercise_id);
+      await deleteExercise(exerciseId); // Use the converted `exerciseId`
     } catch (error) {
       console.error(error);
-      throw new Error('Unable to create exercise');
+      throw new Error("Unable to delete exercise");
     }
     return redirect("/protected/exercises");
   }
@@ -50,7 +49,7 @@ export default async function ExerciseDetailsPage({
       <h2>Instructions</h2>
       {renderInstructions(exercise.instructions)}
       <br />
-      {exercise.tips && exercise.tips.trim() !== '' && (
+      {exercise.tips && exercise.tips.trim() !== "" && (
         <>
           <h2>Tips</h2>
           <p>{exercise.tips}</p>

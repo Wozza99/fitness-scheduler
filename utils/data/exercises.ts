@@ -1,7 +1,7 @@
 import { getTable } from "./database";
 
 export type Exercise = {
-    exercise_id: string;
+    exercise_id: number;
     profile_id: string;
     exercise_name: string;
     instructions?: string;
@@ -54,7 +54,7 @@ export async function createExercise(profile_id: string, exercise_name: string, 
 }
 
 // Update an existing exercise
-export async function updateExercise(exercise_id: string, profile_id: string, exercise_name: string, instructions?: string, tips?: string): Promise<Exercise> {
+export async function updateExercise(exercise_id: number, profile_id: string, exercise_name: string, instructions?: string, tips?: string): Promise<Exercise> {
     const table = await getTable("exercises");
     const updatedExercise = {
         profile_id,
@@ -74,7 +74,7 @@ export async function updateExercise(exercise_id: string, profile_id: string, ex
 }
 
 // Delete an exercise
-export async function deleteExercise(exercise_id: string): Promise<void> {
+export async function deleteExercise(exercise_id: number): Promise<void> {
     const table = await getTable("exercises");
     const request = await table.delete().eq("exercise_id", exercise_id);
     if (request.error != null) {
