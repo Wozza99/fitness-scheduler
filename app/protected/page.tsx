@@ -1,19 +1,13 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import { getProfileById } from "@/utils/data/profiles";
+import { verifyUser } from "@/utils/data/database";
 
 export default async function ProtectedPage() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/sign-in");
+  const verifiedUser = await verifyUser();
+  if (!verifiedUser) {
+    throw new Error("User is not authenticated");
   }
 
-  const profile = await getProfileById(user.id);
+  const profile = await getProfileById(verifiedUser.id);
 
   return (
     <div>

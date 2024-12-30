@@ -1,21 +1,16 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { getWorkoutsForUser } from "@/utils/data/workouts";
+import { deleteWorkout, getWorkoutsForUser } from "@/utils/data/workouts";
 import Table from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { verifyUser } from "@/utils/data/database";
+import Link from "next/link";
 
 export default async function WorkoutsPage() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/sign-in");
+  const verifiedUser = await verifyUser();
+  if (!verifiedUser) {
+    throw new Error("User is not authenticated");
   }
 
-  const workouts = await getWorkoutsForUser(user.id);
+  const workouts = await getWorkoutsForUser(verifiedUser.id);
 
   const columns = ["workout_name", "description", "points"];
   const columnNames = {
@@ -26,18 +21,35 @@ export default async function WorkoutsPage() {
 
   const customColumns = [
     {
-      header: "Approved",
-      render: () => "Yes"
+      header: "View",
+      render: (row) => (
+        <Button asChild size="sm" variant={"outline"}>
+            <Link href={`/protected/workouts/${row.workout_id}`}>View</Link>
+        </Button>
+      ),
     },
-    {
-      header: "Is it really?",
-      render: () => "No :("
-    }
+/*     {
+      header: "Delete",
+      render: (row) => (
+        <form action={deleteWorkout(row.workout_id)}>
+          <Button
+            type="button"
+            variant={"outline"}
+            onClick={() => deleteWorkout(row.workout_id)}
+          >
+            Delete
+          </Button>
+        </form>
+      ),
+    } */
   ];
 
   return (
     <div>
       <h1>Workouts</h1>
+      <Button asChild size="sm" variant={"outline"}>
+        <Link href="workouts/add">Add Workout</Link>
+      </Button>
       <Table
         columns={columns}
         data={workouts}

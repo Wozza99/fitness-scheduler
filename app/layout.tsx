@@ -38,6 +38,7 @@ export default function RootLayout({
                 </div>
                 <Navbar />
                 <HeaderAuth />
+                <ThemeSwitcher />
               </div>
             </header>
             <div className="flex-1 w-full flex flex-col gap-20 items-center">

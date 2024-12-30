@@ -1,32 +1,29 @@
-import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-import { getExercises } from "@/utils/data/exercises";
-import Table from "@/components/ui/table";
+import { getExercisesForUser } from "@/utils/data/exercises";
+import { verifyUser } from "@/utils/data/database";
+import Grid from "@/components/ui/grid";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function ExercisesPage() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/sign-in");
+  const verifiedUser = await verifyUser();
+  if (!verifiedUser) {
+    throw new Error("User is not authenticated");
   }
 
-  const exercises = await getExercises();
+  const exercises = await getExercisesForUser(verifiedUser.id);
 
-  const columns = ["exercise_name", "instructions", "tips"];
-  const columnNames = {
-    exercise_name: "Name",
-    instructions: "Instructions",
-    tips: "Tips",
-  };
+  const items = exercises.map(exercise => ({
+    title: exercise.exercise_name,
+    link: `/protected/exercises/${exercise.exercise_id}`
+  }));
 
   return (
     <div>
       <h1>Exercises</h1>
-      <Table columns={columns} data={exercises} columnNames={columnNames} />
+        <Button asChild size="sm" variant={"outline"}>
+          <Link href="exercises/add">Add Exercise</Link>
+        </Button>
+      <Grid items={items} />
     </div>
   );
 }

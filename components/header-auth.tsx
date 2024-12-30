@@ -1,18 +1,13 @@
 import { signOutAction } from "@/utils/auth-util";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/server";
 import { getProfileById } from "@/utils/data/profiles";
-import { redirect } from "next/navigation";
+import { verifyUser } from "@/utils/data/database";
 
 export default async function AuthButton() {
-  const supabase = await createClient();
+  const verifiedUser = await verifyUser(false);
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  if (!verifiedUser) {
     return (
       <div className="flex gap-2">
         <Button asChild size="sm" variant={"outline"}>
@@ -25,7 +20,7 @@ export default async function AuthButton() {
     );
   }
 
-  const profile = await getProfileById(user.id);
+  const profile = await getProfileById(verifiedUser.id);
 
   return (
     <div className="flex items-center gap-4">
