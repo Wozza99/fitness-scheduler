@@ -7,9 +7,10 @@ import { redirect } from "next/navigation";
 export default async function WorkoutDetailsPage({
     params,
 }: {
-    params: { workout_id: number };
+    params: Promise<{ workout_id: number }>;
 }) {
-    const workout = await getWorkoutById(params.workout_id);
+    const workoutID = (await params).workout_id;
+    const workout = await getWorkoutById(workoutID);
 
     // Helper function to render description
     const renderDescription = (description: string | null) => {
@@ -33,7 +34,7 @@ export default async function WorkoutDetailsPage({
         return <p>{description}</p>;
     };
 
-    const workoutExercises = await getWorkoutExercisesWithNames(params.workout_id);
+    const workoutExercises = await getWorkoutExercisesWithNames(workoutID);
 
     const columns = ["exercise_name", "sets", "reps", "duration_seconds", "notes"];
     const columnNames = {
