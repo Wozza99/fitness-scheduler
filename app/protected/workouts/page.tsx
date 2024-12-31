@@ -22,7 +22,7 @@ export default async function WorkoutsPage() {
   const customColumns = [
     {
       header: "View",
-      render: (row) => (
+      render: (row: { [key: string]: any }) => (
         <Button asChild size="sm" variant={"outline"}>
             <Link href={`/protected/workouts/${row.workout_id}`}>View</Link>
         </Button>
