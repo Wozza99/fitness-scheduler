@@ -5,6 +5,11 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+/**
+ * Handles user sign-up.
+ * @param {FormData} formData - The form data.
+ * @returns {Promise<void>}
+ */
 export const signUpAction = async (formData: FormData) => {
   const username = formData.get("username")?.toString();
   const email = formData.get("email")?.toString();
@@ -43,6 +48,11 @@ export const signUpAction = async (formData: FormData) => {
   }
 };
 
+/**
+ * Handles user sign-in.
+ * @param {FormData} formData - The form data.
+ * @returns {Promise<void>}
+ */
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -60,6 +70,11 @@ export const signInAction = async (formData: FormData) => {
   return redirect("/protected");
 };
 
+/**
+ * Handles forgot password action.
+ * @param {FormData} formData - The form data.
+ * @returns {Promise<void>}
+ */
 export const forgotPasswordAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
   const supabase = await createClient();
@@ -94,6 +109,11 @@ export const forgotPasswordAction = async (formData: FormData) => {
   );
 };
 
+/**
+ * Handles reset password action.
+ * @param {FormData} formData - The form data.
+ * @returns {Promise<void>}
+ */
 export const resetPasswordAction = async (formData: FormData) => {
   const supabase = await createClient();
 
@@ -131,6 +151,10 @@ export const resetPasswordAction = async (formData: FormData) => {
   encodedRedirect("success", "/protected/reset-password", "Password updated");
 };
 
+/**
+ * Handles user sign-out.
+ * @returns {Promise<void>}
+ */
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();

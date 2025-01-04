@@ -8,9 +8,10 @@ interface TableProps {
         header: React.ReactNode;
         render: (row: { [key: string]: any }, rowIndex: number) => React.ReactNode;
     }[];
+    renderFooter?: () => React.ReactNode;
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, columnNames, customColumns }) => {
+const Table: React.FC<TableProps> = ({ columns, data, columnNames, customColumns, renderFooter }) => {
     return (
         <table>
             <thead>
@@ -34,6 +35,7 @@ const Table: React.FC<TableProps> = ({ columns, data, columnNames, customColumns
                         ))}
                     </tr>
                 ))}
+                {renderFooter && renderFooter()}
             </tbody>
         </table>
     );

@@ -2,6 +2,12 @@ import { Button } from "@/components/ui/button";
 import { deleteExercise, getExerciseById } from "@/utils/data/exercises";
 import { redirect } from "next/navigation";
 
+/**
+ * ExerciseDetailsPage component - Displays details of a specific exercise.
+ * @param {Object} params - The route parameters.
+ * @param {number} params.exercise_id - The ID of the exercise.
+ * @returns {JSX.Element} The rendered component.
+ */
 export default async function ExerciseDetailsPage({
   params,
 }: {
@@ -10,7 +16,11 @@ export default async function ExerciseDetailsPage({
   const exerciseID = (await params).exercise_id;
   const exercise = await getExerciseById(exerciseID);
 
-  // Helper function to render instructions
+  /**
+   * Renders the instructions as an ordered list or plain text.
+   * @param {string | null} instructions - The instructions text.
+   * @returns {JSX.Element} The rendered instructions.
+   */
   const renderInstructions = (instructions: string | null) => {
     if (!instructions || instructions.trim() === "") return <p>No instructions available.</p>;
 
@@ -31,6 +41,9 @@ export default async function ExerciseDetailsPage({
     return <p>{instructions}</p>;
   };
 
+  /**
+   * Handles the form submission to delete the exercise.
+   */
   async function handleSubmit() {
     "use server";
 
