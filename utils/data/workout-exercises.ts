@@ -6,7 +6,7 @@ export type WorkoutExercise = {
     exercise_id: number;
     sets?: number;
     reps?: number;
-    durationSeconds?: number;
+    duration_seconds?: number;
     notes?: string;
 };
 

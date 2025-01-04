@@ -61,7 +61,7 @@ export const AddExerciseForm: React.FC<AddExerciseFormProps> = ({ workoutID, exe
                         <input type="number" name="reps" placeholder="Reps" onChange={handleInputChange} />
                     </td>
                     <td>
-                        <input type="number" name="durationSeconds" placeholder="Duration (Seconds)" onChange={handleInputChange} />
+                        <input type="number" name="duration_seconds" placeholder="Duration (Seconds)" onChange={handleInputChange} />
                     </td>
                     <td>
                         <input type="text" name="notes" placeholder="Notes" onChange={handleInputChange} />
@@ -117,7 +117,7 @@ export const UpdateExerciseForm: React.FC<UpdateExerciseFormProps> = ({ workoutI
     const [updatedExercise, setUpdatedExercise] = useState<Partial<WorkoutExercise>>({
         sets: exercise.sets,
         reps: exercise.reps,
-        durationSeconds: exercise.durationSeconds,
+        duration_seconds: exercise.duration_seconds,
         notes: exercise.notes,
     });
 
@@ -140,7 +140,7 @@ export const UpdateExerciseForm: React.FC<UpdateExerciseFormProps> = ({ workoutI
                 <input type="number" name="reps" value={updatedExercise.reps || ''} onChange={handleInputChange} />
             </td>
             <td>
-                <input type="number" name="durationSeconds" value={updatedExercise.durationSeconds || ''} onChange={handleInputChange} />
+                <input type="number" name="duration_seconds" value={updatedExercise.duration_seconds || ''} onChange={handleInputChange} />
             </td>
             <td>
                 <input type="text" name="notes" value={updatedExercise.notes || ''} onChange={handleInputChange} />
@@ -206,7 +206,7 @@ export const WorkoutExerciseTable: React.FC<WorkoutExerciseTableProps> = ({
                                 <td>{exercise.exercise_name}</td>
                                 <td>{exercise.sets}</td>
                                 <td>{exercise.reps}</td>
-                                <td>{exercise.durationSeconds}</td>
+                                <td>{exercise.duration_seconds}</td>
                                 <td>{exercise.notes}</td>
                                 <td>
                                     <button onClick={() => setEditingExerciseID(exercise.exercise_id)}>Edit</button>
