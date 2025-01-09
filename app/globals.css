@@ -167,6 +167,7 @@
 
   th {
     background-color: var(--muted);
+    text-align: center;
   }
 
 }

@@ -2,6 +2,9 @@ import { createWorkout } from "@/utils/data/workouts";
 import { verifyUser } from "@/utils/data/database";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Link from "next/link";
 
 /**
  * NewWorkoutPage component - Form to create a new workout.
@@ -44,21 +47,32 @@ export default async function NewWorkoutPage() {
 
   return (
     <div>
-      <h1>Create a New Workout</h1>
       <form action={handleSubmit}>
-        <label htmlFor="workout_name">Workout Name:</label><br />
-        <input id="workout_name" name="workout_name" required /><br />
+        <h1>Create a New Workout</h1>
+        <Label htmlFor="workout_name">Workout Name:</Label><br />
+        <Input id="workout_name" name="workout_name" required /><br />
 
-        <label htmlFor="description">Description:</label><br />
-        <textarea id="description" name="description" /><br />
+        <Label htmlFor="description">Description:</Label><br />
+        <textarea
+          id="description"
+          name="description"
+          className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        /><br />
 
-        <label htmlFor="points">Progress Points:</label><br />
-        <input type="number" id="points" name="points" /><br />
+        <Label htmlFor="points">Progress Points:</Label><br />
+        <Input type="number" id="points" name="points" /><br />
 
-        <Button type="submit" variant={"outline"}>
-          Create Workout
-        </Button>
+        <div className="flex space-x-2 mt-4">
+          <Button type="submit" variant={"ghost"}>
+            Create Workout
+          </Button>
+
+          <Button asChild variant={"outline"}>
+            <Link href="/protected/workouts">Cancel</Link>
+          </Button>
+        </div>
       </form>
     </div>
+
   );
 }

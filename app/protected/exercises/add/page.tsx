@@ -2,6 +2,9 @@ import { createExercise } from "@/utils/data/exercises";
 import { verifyUser } from "@/utils/data/database";
 import { Button } from "@/components/ui/button";
 import { redirect } from "next/navigation";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 /**
  * NewExercisePage component - Form to create a new exercise.
@@ -46,18 +49,24 @@ export default async function NewExercisePage() {
     <div>
       <h1>Create a New Exercise</h1>
       <form action={handleSubmit}>
-        <label htmlFor="exercise_name">Exercise Name:</label><br />
-        <input id="exercise_name" name="exercise_name" required /><br />
+        <Label htmlFor="exercise_name">Exercise Name:</Label><br />
+        <Input id="exercise_name" name="exercise_name" required /><br />
 
-        <label htmlFor="instructions">Instructions:</label><br />
-        <textarea id="instructions" name="instructions" /><br />
+        <Label htmlFor="instructions">Instructions:</Label><br />
+        <textarea id="instructions" name="description" className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" /><br />
 
-        <label htmlFor="tips">Tips:</label><br />
-        <textarea id="tips" name="tips" /><br />
+        <Label htmlFor="tips">Tips:</Label><br />
+        <textarea id="tips" name="tips" className="flex h-20 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" /><br />
 
-        <Button type="submit" variant={"outline"}>
-          Create Exercise
-        </Button>
+        <div className="flex space-x-2 mt-4">
+          <Button type="submit" variant={"ghost"}>
+            Create Exercise
+          </Button>
+
+          <Button asChild variant={"outline"}>
+            <Link href="/protected/exercises">Cancel</Link>
+          </Button>
+        </div>
       </form>
     </div>
   );

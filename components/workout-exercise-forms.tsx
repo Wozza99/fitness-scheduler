@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Exercise } from "@/utils/data/exercises";
 import { WorkoutExercise } from "@/utils/data/workout-exercises";
 import Table from "@/components/ui/table";
+import { Input } from "./ui/input";
 
 interface AddExerciseFormProps {
     workoutID: number;
@@ -55,16 +56,16 @@ export const AddExerciseForm: React.FC<AddExerciseFormProps> = ({ workoutID, exe
                         </select>
                     </td>
                     <td>
-                        <input type="number" name="sets" placeholder="Sets" onChange={handleInputChange} />
+                        <Input type="number" name="sets" placeholder="Sets" onChange={handleInputChange} />
                     </td>
                     <td>
-                        <input type="number" name="reps" placeholder="Reps" onChange={handleInputChange} />
+                        <Input type="number" name="reps" placeholder="Reps" onChange={handleInputChange} />
                     </td>
                     <td>
-                        <input type="number" name="duration_seconds" placeholder="Duration (Seconds)" onChange={handleInputChange} />
+                        <Input type="number" name="duration_seconds" placeholder="Duration (Seconds)" onChange={handleInputChange} />
                     </td>
                     <td>
-                        <input type="text" name="notes" placeholder="Notes" onChange={handleInputChange} />
+                        <Input type="text" name="notes" placeholder="Notes" onChange={handleInputChange} />
                     </td>
                     <td>
                         <button onClick={handleSaveClick}>Save</button>
@@ -134,16 +135,16 @@ export const UpdateExerciseForm: React.FC<UpdateExerciseFormProps> = ({ workoutI
         <>
             <td>{exercise.exercise_name}</td>
             <td>
-                <input type="number" name="sets" value={updatedExercise.sets || ''} onChange={handleInputChange} />
+                <Input type="number" name="sets" value={updatedExercise.sets || ''} onChange={handleInputChange} />
             </td>
             <td>
-                <input type="number" name="reps" value={updatedExercise.reps || ''} onChange={handleInputChange} />
+                <Input type="number" name="reps" value={updatedExercise.reps || ''} onChange={handleInputChange} />
             </td>
             <td>
-                <input type="number" name="duration_seconds" value={updatedExercise.duration_seconds || ''} onChange={handleInputChange} />
+                <Input type="number" name="duration_seconds" value={updatedExercise.duration_seconds || ''} onChange={handleInputChange} />
             </td>
             <td>
-                <input type="text" name="notes" value={updatedExercise.notes || ''} onChange={handleInputChange} />
+                <Input type="text" name="notes" value={updatedExercise.notes || ''} onChange={handleInputChange} />
             </td>
             <td>
                 <button onClick={handleSaveClick}>Save</button>
@@ -188,7 +189,7 @@ export const WorkoutExerciseTable: React.FC<WorkoutExerciseTableProps> = ({
                     <th>Reps</th>
                     <th>Duration (Seconds)</th>
                     <th>Notes</th>
-                    <th>Actions</th>
+                    <th colSpan={2}>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -210,6 +211,8 @@ export const WorkoutExerciseTable: React.FC<WorkoutExerciseTableProps> = ({
                                 <td>{exercise.notes}</td>
                                 <td>
                                     <button onClick={() => setEditingExerciseID(exercise.exercise_id)}>Edit</button>
+                                </td>
+                                <td>
                                     <DeleteExerciseButton
                                         workoutID={workoutID}
                                         exerciseID={exercise.exercise_id}

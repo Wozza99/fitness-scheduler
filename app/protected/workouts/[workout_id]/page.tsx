@@ -10,6 +10,7 @@ import {
 import { getExercisesForUser } from "@/utils/data/exercises";
 import { redirect } from "next/navigation";
 import { WorkoutExerciseTable } from "@/components/workout-exercise-forms";
+import Link from "next/link";
 
 /**
  * Renders the details of a specific workout, including its description,
@@ -166,8 +167,11 @@ export default async function WorkoutDetailsPage({
                 onUpdateExercise={handleUpdateExercise}
             />
             <form action={handleSubmit}>
-                <Button type="submit" variant="outline">
+                <Button type="submit" variant="ghost">
                     Delete Workout
+                </Button>
+                <Button asChild variant={"outline"}>
+                    <Link href={`/protected/workouts/`}>Back</Link>
                 </Button>
             </form>
         </div>

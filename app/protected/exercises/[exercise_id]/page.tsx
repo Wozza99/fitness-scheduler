@@ -1,13 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { deleteExercise, getExerciseById } from "@/utils/data/exercises";
-import { redirect } from "next/navigation";
+import EditableExercise from "@/components/edit-exercise-form";
+import { deleteExercise, getExerciseById, updateExercise } from "@/utils/data/exercises";
 
-/**
- * ExerciseDetailsPage component - Displays details of a specific exercise.
- * @param {Object} params - The route parameters.
- * @param {number} params.exercise_id - The ID of the exercise.
- * @returns {JSX.Element} The rendered component.
- */
 export default async function ExerciseDetailsPage({
   params,
 }: {
@@ -17,63 +10,48 @@ export default async function ExerciseDetailsPage({
   const exercise = await getExerciseById(exerciseID);
 
   /**
-   * Renders the instructions as an ordered list or plain text.
-   * @param {string | null} instructions - The instructions text.
-   * @returns {JSX.Element} The rendered instructions.
+   * Handles saving updated exercise data to the database.
    */
-  const renderInstructions = (instructions: string | null) => {
-    if (!instructions || instructions.trim() === "") return <p>No instructions available.</p>;
+  async function handleSave(data: {
+    exercise_id: number;
+    profile_id: string;
+    exercise_name: string;
+    instructions: string | undefined;
+    tips: string | undefined;
+  }) {
+    "use server";
 
-    const lines = instructions.split("\n").filter((line) => line.trim() !== "");
+    const { exercise_id, profile_id, exercise_name, instructions, tips } = data;
 
-    // Render as an ordered list if there are multiple lines
-    if (lines.length > 1) {
-      return (
-        <ol>
-          {lines.map((line, index) => (
-            <li key={index}>{line}</li>
-          ))}
-        </ol>
-      );
+    try {
+      await updateExercise(exercise_id, profile_id, exercise_name, instructions, tips);
+    } catch (error) {
+      console.error("Failed to update exercise:", error);
+      throw new Error("Unable to save changes. Please try again.");
     }
-
-    // Render as plain text if it's a single line
-    return <p>{instructions}</p>;
-  };
+  }
 
   /**
-   * Handles the form submission to delete the exercise.
+   * Handles deleting an exercise from the database.
    */
-  async function handleSubmit() {
+  async function handleDelete(exercise_id: number) {
     "use server";
 
     try {
-      await deleteExercise(exercise.exercise_id);
+      await deleteExercise(exercise_id);
     } catch (error) {
-      console.error(error);
-      throw new Error("Unable to delete exercise");
+      console.error("Failed to delete exercise:", error);
+      throw new Error("Unable to delete exercise. Please try again.");
     }
-    return redirect("/protected/exercises");
   }
 
   return (
     <div>
-      <h1>{exercise.exercise_name}</h1>
-      <br />
-      <h2>Instructions</h2>
-      {renderInstructions(exercise.instructions)}
-      <br />
-      {exercise.tips && exercise.tips.trim() !== "" && (
-        <>
-          <h2>Tips</h2>
-          <p>{exercise.tips}</p>
-        </>
-      )}
-      <form action={handleSubmit}>
-        <Button type="submit" variant={"outline"}>
-          Delete Exercise
-        </Button>
-      </form>
+    <EditableExercise
+      exercise={exercise}
+      handleSave={handleSave}
+      handleDelete={handleDelete}
+    />
     </div>
   );
 }

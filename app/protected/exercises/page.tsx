@@ -3,6 +3,7 @@ import { verifyUser } from "@/utils/data/database";
 import Grid from "@/components/ui/grid";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
 
 /**
  * ExercisesPage component - Displays a list of exercises for the authenticated user.
@@ -27,7 +28,19 @@ export default async function ExercisesPage() {
   return (
     <div>
       <h1>Exercises</h1>
-      <Button asChild size="sm" variant={"ghost"}>
+      <Input
+        type="text"
+        placeholder="Search cards..."
+        /* value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)} */
+        style={{
+          marginBottom: "20px",
+          padding: "10px",
+          width: "30%",
+          fontSize: "16px",
+        }}
+      />
+      <Button asChild size="sm" variant={"outline"}>
         <Link href="exercises/add">Add Exercise</Link>
       </Button>
       <Grid items={items} />
